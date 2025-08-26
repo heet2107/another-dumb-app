@@ -1,0 +1,507 @@
+{
+  "name": "Ultimate SEO 85+ Score WordPress Content Generator",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Ultimate SEO 85+ Score Tech Blog Generator",
+        "formDescription": "Create perfectly structured tech blog posts optimized for 85+ SEO score and AI search results",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Research Query",
+              "fieldType": "textarea",
+              "placeholder": "What are the latest AI agent technologies for software testing and quality assurance?",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Primary Keyword (Focus Keyword)",
+              "placeholder": "AI Agents for Software Testing",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Secondary Keywords",
+              "fieldType": "textarea",
+              "placeholder": "flakiness, rework, slowness, locator maintain, error handling, QA, Automation, Manual Testing, SDET, Continuous Testing",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "form-trigger",
+      "name": "Form Submission",
+      "type": "n8n-nodes-base.formTrigger",
+      "position": [-1200, 0],
+      "typeVersion": 2.2
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o",
+          "cachedResultName": "GPT-4O"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "You are an expert technology researcher and SEO specialist with deep expertise in software testing, AI, DevOps, and emerging technology trends. Your research should be comprehensive, current, and optimized for both SEO and AI ranking algorithms (ChatGPT, SGE, Perplexity). Focus on actionable insights, real-world applications, and authoritative sources that will support the creation of a comprehensive 1,500-word blog post.",
+              "role": "system"
+            },
+            {
+              "content": "=Research the following technology topic with PRIMARY KEYWORD optimization for ultimate SEO + AI ranking:\n\n**RESEARCH QUERY**: {{ $('Form Submission').item.json['Research Query'] }}\n**PRIMARY KEYWORD**: {{ $('Form Submission').item.json['Primary Keyword (Focus Keyword)'] }}\n**SECONDARY KEYWORDS**: {{ $('Form Submission').item.json['Secondary Keywords'] }}\n\n**COMPREHENSIVE RESEARCH REQUIREMENTS:**\n\n**Core Research Areas (For 1,500-word article support):**\n1. **Clear Definition & Overview**: Semantic definitions optimized for AI extraction and featured snippets\n2. **Current Industry State**: Latest developments, statistics, and market data with dates\n3. **Key Technologies & Players**: Specific companies, tools, platforms with real examples\n4. **Technical Implementation**: Detailed how-to guides, methodologies, best practices\n5. **Real-World Applications**: 2+ specific use cases with quantifiable metrics and outcomes\n6. **Comparative Analysis**: Pros/cons, alternatives, competitive landscape, benchmarking\n7. **Common Challenges**: Problems like flakiness, rework, slowness, locator maintenance, error handling\n8. **Solutions & Recommendations**: Emerging solutions, expert recommendations, implementation strategies\n9. **Future Outlook**: Industry predictions, emerging trends, 2025+ forecasts\n10. **Expert Insights**: Quotes from industry leaders, research findings, authoritative sources\n\n**SEO + AI Research Optimization:**\n✓ Provide question-answer style information for Q&A sections (\"What is...\", \"How does...\", \"Why should...\")\n✓ Include mini-definitions and explanations for technical terms\n✓ Gather statistics, percentages, and quantifiable data points\n✓ Find authoritative sources for external linking (Wikipedia, Gartner, IEEE, MDN Web Docs)\n✓ Research industry reports, studies, and expert opinions\n✓ Include comparison data for tables and pros/cons lists\n✓ Cover adjacent technologies: Selenium, GitHub, CI/CD, Jenkins, Azure DevOps, Docker, Kubernetes\n✓ Research AI tech integration: machine learning, neural networks, automation, algorithms, predictive analytics\n\n**Content Structure Support:**\nProvide comprehensive information to support:\n- TL;DR bullet points creation\n- Featured snippet-style answers (40-60 words)\n- Multiple H2/H3 headings with keyword integration\n- Q&A blocks addressing common questions\n- Comparison tables and pros/cons analysis\n- Real-world use case examples with specific metrics\n- Key takeaways and summary points\n- Future predictions and trend analysis\n\n**Technical Depth Requirements:**\n✓ Balance technical accuracy with grade 6-8 readability\n✓ Include specific implementation details and code examples where relevant\n✓ Cover troubleshooting common issues (flakiness, rework, slowness, etc.)\n✓ Provide actionable recommendations for different skill levels\n✓ Include integration scenarios with popular tools and platforms\n✓ Address compliance, security, and performance considerations\n\n**Authority & Credibility Sources:**\nResearch and reference:\n- Industry reports (Gartner, Forrester, etc.)\n- Academic research and peer-reviewed papers\n- Major technology vendor documentation\n- Open-source project documentation\n- Industry conference presentations and expert talks\n- Government and regulatory standards\n- Professional certification requirements\n- Case studies from enterprise implementations\n\n**Competitive Intelligence:**\n✓ Alternative solutions and vendor comparisons\n✓ Market positioning and differentiation factors\n✓ Pricing models and ROI considerations\n✓ Integration capabilities and ecosystem compatibility\n✓ Scalability and performance benchmarks\n✓ User adoption trends and community feedback\n\n**Future-Proofing Research:**\n✓ Emerging technologies and innovation trends\n✓ Industry standardization efforts\n✓ Regulatory changes and compliance requirements\n✓ Skills gap analysis and training needs\n✓ Investment trends and funding patterns\n✓ Expert predictions for 2025 and beyond\n\nProvide comprehensive, well-structured research findings that will enable the creation of the ultimate SEO + AI optimized blog post about {{ $('Form Submission').item.json['Primary Keyword (Focus Keyword)'] }}. The research should be detailed enough to support a 1,500-word article with unique insights, expert authority, and perfect optimization for both search engines and AI algorithms.",
+              "role": "user"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "ai-research",
+      "name": "AI Research",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "position": [-900, 0],
+      "typeVersion": 1.8
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "research-data",
+              "name": "research",
+              "type": "string",
+              "value": "={{ $json.message.content }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "format-research",
+      "name": "Format Research",
+      "type": "@n8n/n8n-nodes-langchain.set",
+      "position": [-600, 0],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=**ULTIMATE SEO 85+ SCORE BLOG GENERATOR - Complete Structure Implementation**\n\nWrite a 1,500-word blog post targeting the primary keyword: \"{{ $('Form Submission').item.json['Primary Keyword (Focus Keyword)'] }}\". This blog must follow the EXACT structure below and be optimized for both Google #1 ranking and Generative AI answers (ChatGPT, SGE, Perplexity, etc.).\n\n**RESEARCH DATA**: {{ $('Format Research').item.json.research }}\n**SECONDARY KEYWORDS**: {{ $('Form Submission').item.json['Secondary Keywords'] }}\n\n**✅ MANDATORY CORE CONTENT STRUCTURE (EXACT ORDER - DO NOT DEVIATE):**\n\n1. **H1 Title** - Include primary keyword\n2. **Opening Sentence** - MUST start with Focus Keyword in the very first sentence\n3. **Estimated Reading Time** - \"Estimated reading time: 7-8 minutes\" (based on 1,500 words)\n4. **TL;DR Section** - 5-7 bullet points summarizing key takeaways (at least one MUST include focus keyword)\n5. **Meta Description Display** - Show as HTML comment for reference (150-160 characters using primary keyword)\n6. **Featured Snippet Answer** - 40-60 words answering the main question after the intro\n7. **Table of Contents** - With anchor links, some containing Focus Keyword\n8. **Main Content** - At least 6 H2/H3 headings with natural keyword usage\n9. **Q&A Blocks** - Include headings like \"What is...?\", \"How does...?\"\n10. **Comparison Tables and/or Pros/Cons Lists** - Structured data for easy scanning\n11. **2 Use Case Examples** - Real-world applications with numbers or metrics\n12. **Key Takeaways Section** - Near the end, 3-5 bullets with the keyword included\n13. **Summary Box** - 4-6 bullet points recap\n14. **Conclusion + Call-to-Action** - Strong conclusion repeating focus keyword + link to: https://contextqa.com\n\n**🧩 TECHNICAL & SEO CHECKLIST (ALL MANDATORY FOR 85+ SCORE):**\n✓ Use simple, clear English (grade 6-8 readability)\n✓ Use active voice, short paragraphs, and bullet points throughout\n✓ **Bold the Focus Keyword 2-3 times** in the body text\n✓ **Repeat Focus Keyword at least 5 times** and in 3+ H2 headings\n✓ Include internal link placeholders: [INTERNAL LINK: anchor text]\n✓ Mention these specific secondary keywords naturally: flakiness, rework, slowness, locator maintain, error handling\n✓ Add 2-3 external authoritative DoFollow links (Wikipedia, Gartner, IEEE, MDN Web Docs)\n✓ Reference industry reports, studies, or expert quotes from research\n✓ Add JSON-LD schema for Article and FAQ at the end\n✓ Maintain conversational, professional tone for devs, QAs, CTOs, and tech decision-makers\n\n**🧠 AI RANKING CHECKLIST (CRITICAL FOR AI VISIBILITY):**\n✓ Structure content with semantic clarity so AI can extract meaningful chunks\n✓ Add mini-definitions, inline Q&A, and real-world examples throughout\n✓ Use terminology from adjacent tools: Selenium, GitHub, CI/CD, Jenkins, Azure DevOps\n✓ Naturally integrate AI tech terms where relevant: machine learning, artificial intelligence, neural networks, deep learning, automation, algorithms, data science, cloud computing, edge computing, NLP, computer vision, predictive analytics, big data, IoT, API integration, microservices, containerization, DevOps, CI/CD, serverless computing\n✓ Include practical examples, code snippets, or implementation details\n✓ Add actionable recommendations and takeaways in every section\n\n**📋 FINAL DELIVERABLE REQUIREMENTS:**\n✓ **Length**: Exactly ~1,500 words\n✓ **Style**: Professional but accessible writing style\n✓ **Optimization**: Optimized for ranking #1 on Google and answering Generative AI queries\n✓ **Uniqueness**: Provide unique insights, not generic regurgitation\n✓ **Future Focus**: Include future predictions or trends where relevant (2025+)\n✓ **Authority**: Demonstrate expert knowledge and industry authority\n✓ **Actionability**: Every section should provide actionable value\n✓ **Engagement**: Use rhetorical questions, engaging transitions, compelling examples\n\n**🎯 KEYWORD OPTIMIZATION REQUIREMENTS:**\n- Primary keyword \"{{ $('Form Submission').item.json['Primary Keyword (Focus Keyword)'] }}\" must appear:\n  ✓ In the very first sentence\n  ✓ In at least 3 H2/H3 headings\n  ✓ Bolded 2-3 times in body text\n  ✓ At least 5 times throughout the content\n  ✓ In the conclusion paragraph\n  ✓ In at least one TL;DR bullet point\n  ✓ In at least one Key Takeaways bullet point\n\n**📊 CONTENT QUALITY STANDARDS:**\n✓ Each section must build logically on the previous one\n✓ Include specific statistics, percentages, and data points from research\n✓ Provide step-by-step guidance where applicable\n✓ Address common pain points and solutions\n✓ Include expert insights and industry perspectives\n✓ Balance depth with readability (grade 6-8 level)\n✓ Use active voice and short sentences for clarity\n✓ Create scannable content with proper formatting\n\n**🔗 LINKING STRATEGY:**\n✓ 2-3 external DoFollow links to authoritative sources (embed naturally in content)\n✓ 2-3 internal link placeholders with keyword-rich anchor text\n✓ Use primary keyword in some anchor text naturally\n✓ Link to industry tools, documentation, and authoritative resources\n\n**OUTPUT REQUIREMENTS:**\nCreate the complete 1,500-word blog post that follows EVERY requirement above. Do not summarize, cut short, or skip any elements. Provide the full, comprehensive article that will achieve #1 Google ranking and maximum AI search visibility.\n\n**Your output must be the complete blog post content only - no preamble, no explanation, just the finished article that follows the exact structure specified.**",
+        "options": {}
+      },
+      "id": "content-generator",
+      "name": "Content Generator",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [-300, 0],
+      "typeVersion": 1.8
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "id": "gpt-4o-mini",
+      "name": "GPT-4O Mini",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "position": [-300, 200],
+      "typeVersion": 1.2
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=**Create SEO + AI optimized slug, blog post title, and meta description for the following tech blog post:**\n\n{{ $json.output }}\n\n**PRIMARY FOCUS KEYWORD**: {{ $('Form Submission').item.json['Primary Keyword (Focus Keyword)'] }}\n**SECONDARY KEYWORDS**: {{ $('Form Submission').item.json['Secondary Keywords'] }}\n\n**MANDATORY SEO + AI OPTIMIZATION REQUIREMENTS:**\n\n**Slug Guidelines:**\n✓ MUST include the exact Primary Keyword in the URL slug\n✓ Keep slug under 50 characters maximum\n✓ Use hyphens to separate words\n✓ Make it readable and SEO-friendly\n✓ Example: \"ai-development-trends-2025\"\n\n**Title Guidelines (CRITICAL SEO + AI REQUIREMENTS):**\n✓ MUST include Primary Keyword at the very beginning of the title\n✓ MUST include a number (like \"7 Ways\", \"10 Best\", \"5 Essential\", etc.)\n✓ MUST include at least one power word: Revolutionary, Ultimate, Essential, Proven, Advanced, Complete, Expert, Breakthrough, Cutting-edge, Game-changing, Innovative, Strategic, Critical, Comprehensive, Exclusive, Master, Leading, Top\n✓ MUST have positive or impactful sentiment\n✓ Keep title between 50-60 characters for optimal SEO\n✓ Include year (2025) when relevant for freshness\n✓ Structure: [Primary Keyword]: [Number] [Power Word] [Context]\n✓ Example: \"AI Development: 7 Revolutionary Trends Transforming Tech in 2025\"\n\n**Meta Description Guidelines:**\n✓ MUST include Primary Keyword in the first 20 characters\n✓ Include 2-3 secondary keywords naturally\n✓ Be exactly 150-160 characters for full visibility\n✓ Include compelling benefit statement\n✓ Use action-oriented language (Discover, Learn, Master, etc.)\n✓ Include numbers when possible\n✓ End with period for completeness\n✓ Example: \"AI Development mastery: Discover 7 revolutionary trends transforming technology in 2025. Learn cutting-edge machine learning strategies for success.\"\n\n**AI RANKING OPTIMIZATION:**\n✓ Structure title for featured snippet potential\n✓ Use semantic clarity for AI extraction\n✓ Include actionable verbs (Discover, Learn, Master, Transform)\n✓ Optimize for voice search patterns\n\nYour output must be a single valid JSON object with these 3 fields:\n-slug: The SEO-optimized slug with primary keyword\n-title: The SEO + AI optimized title with number, power word, and primary keyword\n-meta: The SEO-optimized meta description with primary keyword and benefits\n\nEach should be presented without any additional text, explanation, quotation marks, or formatting.\n",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "id": "seo-optimizer",
+      "name": "SEO Title/Slug/Meta Generator",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [0, 0],
+      "typeVersion": 1.8
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "id": "gpt-4o-mini-2",
+      "name": "GPT-4O Mini 2",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "position": [0, 200],
+      "typeVersion": 1.2
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\"slug\": \"ai-development-trends-2025\",\n\"title\": \"7 Revolutionary AI Development Trends Transforming Tech in 2025\",\n\"meta\": \"AI Development mastery: Discover 7 revolutionary trends transforming technology in 2025. Learn cutting-edge machine learning strategies for success.\"\n}"
+      },
+      "id": "structured-parser",
+      "name": "Structured Output Parser",
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "position": [300, 0],
+      "typeVersion": 1.2
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Only output the HTML content without preamble or further explanation. Generate WordPress-compatible HTML for a tech blog post with COMPLETE SEO + AI OPTIMIZATION STRUCTURE.\n\n### PRIMARY KEYWORD: {{ $('Form Submission').item.json['Primary Keyword (Focus Keyword)'] }}\n### SECONDARY KEYWORDS: {{ $('Form Submission').item.json['Secondary Keywords'] }}\n\n### CONTENT TO PROCESS:\n{{ $json.output }}\n\n### MANDATORY COMPLETE CONTENT STRUCTURE (EXACT ORDER):\n\n**1. H1 TITLE** - Include Primary Keyword\n**2. OPENING SENTENCE** - MUST start with Focus Keyword in first sentence\n**3. ESTIMATED READING TIME** - \"Estimated reading time: 7-8 minutes\" (for ~1,500 words)\n**4. TL;DR SECTION** - 5-7 bullet points summarizing key takeaways (at least one MUST include focus keyword)\n**5. META DESCRIPTION** - Display as HTML comment for reference (150-160 chars with primary keyword)\n**6. FEATURED SNIPPET ANSWER** - 40-60 words answering main question after intro\n**7. TABLE OF CONTENTS** - With anchor links, some containing Focus Keyword\n**8. MAIN CONTENT** - At least 6 H2/H3 headings with natural keyword usage\n**9. Q&A BLOCKS** - \"What is...?\", \"How does...?\" format headings\n**10. COMPARISON TABLES/PROS-CONS** - Structured data for scanning\n**11. 2 USE CASE EXAMPLES** - Real-world applications with numbers/metrics\n**12. KEY TAKEAWAYS SECTION** - Near the end, 3-5 bullets with keyword\n**13. SUMMARY BOX** - 4-6 bullet points recap\n**14. CONCLUSION + CTA** - Strong conclusion repeating focus keyword + link to https://contextqa.com\n\n### TECHNICAL & SEO CHECKLIST (ALL REQUIRED FOR 85+ SCORE):\n✓ Use simple, clear English (grade 6-8 readability)\n✓ Use active voice, short paragraphs, bullet points\n✓ **Bold the Focus Keyword 2-3 times** in the body\n✓ **Repeat Focus Keyword at least 5 times** and in 3+ H2 headings\n✓ Include internal link placeholders: [INTERNAL LINK: anchor text]\n✓ Mention secondary keywords: flakiness, rework, slowness, locator maintain, error handling\n✓ Add 2-3 external authoritative DoFollow links (Wikipedia, Gartner, IEEE, MDN Web Docs)\n✓ Reference industry reports, studies, or expert quotes\n✓ Maintain conversational, professional tone for devs, QAs, CTOs, tech decision-makers\n\n### AI RANKING CHECKLIST:\n✓ Structure content with semantic clarity for AI extraction\n✓ Add mini-definitions, inline Q&A, real-world examples\n✓ Use terminology from adjacent tools: Selenium, GitHub, CI/CD, Jenkins, Azure DevOps\n✓ Naturally integrate AI tech terms: machine learning, artificial intelligence, neural networks, deep learning, automation, algorithms, data science, cloud computing, edge computing, NLP, computer vision, predictive analytics, big data, IoT, API integration, microservices, containerization, DevOps, CI/CD, serverless computing\n✓ Include practical examples, code snippets, implementation details\n✓ Add actionable recommendations and takeaways\n\n### IMAGE REQUIREMENTS:\n✓ Add 2-3 images with Primary Keyword as alt text\n✓ Format: <img src=\"[tech-image-url]\" alt=\"{{ $('Form Submission').item.json['Primary Keyword (Focus Keyword)'] }} - [descriptive context]\" style=\"width:100%; max-width:600px; height:auto; margin: 20px 0;\">\n\n### JSON-LD SCHEMA (CRITICAL FOR 85+ SCORE):\nAdd JSON-LD schema for Article and FAQ at the end:\n```json\n<script type=\"application/ld+json\">\n{\n  \"@context\": \"https://schema.org\",\n  \"@type\": \"Article\",\n  \"headline\": \"[Article Title]\",\n  \"description\": \"[Meta Description]\",\n  \"keywords\": \"{{ $('Form Submission').item.json['Primary Keyword (Focus Keyword)'] }}, {{ $('Form Submission').item.json['Secondary Keywords'] }}\",\n  \"author\": {\n    \"@type\": \"Organization\",\n    \"name\": \"ContextQA\"\n  },\n  \"publisher\": {\n    \"@type\": \"Organization\",\n    \"name\": \"ContextQA\"\n  },\n  \"datePublished\": \"2025-01-01\",\n  \"mainEntityOfPage\": {\n    \"@type\": \"WebPage\",\n    \"@id\": \"https://contextqa.com/\"\n  },\n  \"image\": {\n    \"@type\": \"ImageObject\",\n    \"url\": \"https://contextqa.com/wp-content/uploads/tech-image.jpg\"\n  }\n}\n</script>\n\n<script type=\"application/ld+json\">\n{\n  \"@context\": \"https://schema.org\",\n  \"@type\": \"FAQPage\",\n  \"mainEntity\": [\n    {\n      \"@type\": \"Question\",\n      \"name\": \"What is {{ $('Form Submission').item.json['Primary Keyword (Focus Keyword)'] }}?\",\n      \"acceptedAnswer\": {\n        \"@type\": \"Answer\",\n        \"text\": \"[Answer text here]\"\n      }\n    },\n    {\n      \"@type\": \"Question\",\n      \"name\": \"How does {{ $('Form Submission').item.json['Primary Keyword (Focus Keyword)'] }} work?\",\n      \"acceptedAnswer\": {\n        \"@type\": \"Answer\",\n        \"text\": \"[Answer text here]\"\n      }\n    }\n  ]\n}\n</script>\n```\n\n### STYLING REQUIREMENTS:\n- Links: #00c2ff (blue) with !important\n- Headings: Bottom border in #00c2ff with padding\n- Spacing: <br><br> between major sections\n- Use boxes, highlights, and formatting for engagement\n- WordPress block classes (wp-block-heading, wp-block-paragraph)\n- Heading IDs starting with \"h-\" for TOC linking\n\n### FINAL DELIVERABLE REQUIREMENTS:\n✓ Length: ~1,500 words\n✓ Professional but accessible writing style\n✓ Optimized for ranking #1 on Google and answering Generative AI queries\n✓ Provide unique insights, not generic regurgitation\n✓ Include future predictions or trends where relevant\n✓ **MUST include JSON-LD schema for Article and FAQ**\n\nDO NOT include any explanations, code tags, or comments. Output ONLY the raw HTML that meets ALL requirements above.\n"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "html-generator",
+      "name": "HTML Generator",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "position": [600, 0],
+      "typeVersion": 1.8
+    },
+    {
+      "parameters": {
+        "numberInputs": 3
+      },
+      "id": "merge-content",
+      "name": "Merge Content",
+      "type": "n8n-nodes-base.merge",
+      "position": [900, 0],
+      "typeVersion": 3
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "id": "combine-details",
+      "name": "Combine Blog Details",
+      "type": "n8n-nodes-base.aggregate",
+      "position": [1200, 0],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "clean-content",
+              "name": "content",
+              "type": "string",
+              "value": "={{ $json.data[0].message.content.replaceAll('```html', '').replaceAll('```','') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "cleanup-html",
+      "name": "Cleanup HTML",
+      "type": "@n8n/n8n-nodes-langchain.set",
+      "position": [1500, 0],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "title": "={{ $('Combine Blog Details').item.json.data[2].output.title }}",
+        "additionalFields": {
+          "authorId": 4,
+          "content": "={{ $json.content }}",
+          "slug": "={{ $('Combine Blog Details').item.json.data[2].output.slug }}",
+          "status": "draft",
+          "commentStatus": "closed",
+          "sticky": false,
+          "categories": [3],
+          "postTemplate": {
+            "values": {}
+          }
+        }
+      },
+      "id": "wordpress-publisher",
+      "name": "WordPress Publisher",
+      "type": "n8n-nodes-base.wordpress",
+      "position": [1800, 0],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "image-url",
+              "name": "image-url",
+              "type": "string",
+              "value": "=https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "set-image-url",
+      "name": "Set Image URL",
+      "type": "@n8n/n8n-nodes-langchain.set",
+      "position": [1800, 200],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "url": "={{ $json['image-url'] }}",
+        "options": {}
+      },
+      "id": "get-image",
+      "name": "GET Image",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [2100, 200],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://contextqa.com/wp-json/wp/v2/media",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "wordpressApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Disposition",
+              "value": "=attachment; filename=\"{{ $('Form Submission').item.json['Primary Keyword (Focus Keyword)'].replace(' ', '-') }}-cover-image-{{ $('WordPress Publisher').item.json.id }}.jpeg\""
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "binaryData",
+        "inputDataFieldName": "data",
+        "options": {}
+      },
+      "id": "upload-image",
+      "name": "Upload Image to WordPress",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [2400, 200],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://contextqa.com/wp-json/wp/v2/posts/{{ $('WordPress Publisher').item.json.id }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "wordpressApi",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "featured_media",
+              "value": "={{ $json.id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "set-featured-image",
+      "name": "Set Featured Image",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [2700, 200],
+      "typeVersion": 4.2
+    }
+  ],
+  "connections": {
+    "Form Submission": {
+      "main": [
+        [
+          {
+            "node": "AI Research",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Research": {
+      "main": [
+        [
+          {
+            "node": "Format Research",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Research": {
+      "main": [
+        [
+          {
+            "node": "Content Generator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Content Generator": {
+      "main": [
+        [
+          {
+            "node": "HTML Generator",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "SEO Title/Slug/Meta Generator",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge Content",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "GPT-4O Mini": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Content Generator",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SEO Title/Slug/Meta Generator": {
+      "main": [
+        [
+          {
+            "node": "Merge Content",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "GPT-4O Mini 2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "SEO Title/Slug/Meta Generator",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "SEO Title/Slug/Meta Generator",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML Generator": {
+      "main": [
+        [
+          {
+            "node": "Merge Content",
+            "type": "main",
+            "index": 0
+        ]
+      ]
+    },
+    "Merge Content": {
+      "main": [
+        [
+          {
+            "node": "Combine Blog Details",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Combine Blog Details": {
+      "main": [
+        [
+          {
+            "node": "Cleanup HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cleanup HTML": {
+      "main": [
+        [
+          {
+            "node": "WordPress Publisher",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WordPress Publisher": {
+      "main": [
+        [
+          {
+            "node": "Set Image URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Image URL": {
+      "main": [
+        [
+          {
+            "node": "GET Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET Image": {
+      "main": [
+        [
+          {
+            "node": "Upload Image to WordPress",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload Image to WordPress": {
+      "main": [
+        [
+          {
+            "node": "Set Featured Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {},
+  "versionId": "improved-seo-workflow-v2"
+}
