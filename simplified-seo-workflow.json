@@ -1,0 +1,292 @@
+{
+  "name": "Simplified SEO 85+ Score Generator",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "SEO 85+ Score Blog Generator",
+        "formDescription": "Create perfectly structured tech blog posts optimized for 85+ SEO score",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Research Query",
+              "fieldType": "textarea",
+              "placeholder": "What are the latest AI agent technologies for software testing?",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Primary Keyword (Focus Keyword)",
+              "placeholder": "AI Agents for Software Testing",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Secondary Keywords",
+              "fieldType": "textarea",
+              "placeholder": "flakiness, rework, slowness, locator maintain, error handling",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "form-trigger",
+      "name": "Form Submission",
+      "type": "n8n-nodes-base.formTrigger",
+      "position": [-800, 0],
+      "typeVersion": 2.2
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o",
+          "cachedResultName": "GPT-4O"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "You are an expert technology researcher and SEO specialist. Research the following topic comprehensively:\n\n**RESEARCH QUERY**: {{ $('Form Submission').item.json['Research Query'] }}\n**PRIMARY KEYWORD**: {{ $('Form Submission').item.json['Primary Keyword (Focus Keyword)'] }}\n**SECONDARY KEYWORDS**: {{ $('Form Submission').item.json['Secondary Keywords'] }}\n\nProvide comprehensive research findings that will support a 1,500-word blog post with unique insights, expert authority, and perfect optimization for both search engines and AI algorithms.",
+              "role": "user"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "ai-research",
+      "name": "AI Research",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "position": [-400, 0],
+      "typeVersion": 1.8
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "Write a 1,500-word blog post targeting the primary keyword: \"{{ $('Form Submission').item.json['Primary Keyword (Focus Keyword)'] }}\".\n\n**RESEARCH DATA**: {{ $json.message.content }}\n**SECONDARY KEYWORDS**: {{ $('Form Submission').item.json['Secondary Keywords'] }}\n\n**MANDATORY STRUCTURE:**\n1. H1 Title with primary keyword\n2. Opening sentence starting with Focus Keyword\n3. Estimated reading time (7-8 minutes)\n4. TL;DR section with 5-7 bullet points\n5. Meta description as HTML comment (150-160 chars)\n6. Featured snippet answer (40-60 words)\n7. Table of contents with anchor links\n8. 6+ H2/H3 headings with natural keyword usage\n9. Q&A blocks (\"What is...?\", \"How does...?\")\n10. Comparison tables or pros/cons lists\n11. 2 use case examples with metrics\n12. Key takeaways section (3-5 bullets)\n13. Summary box (4-6 bullet points)\n14. Conclusion + CTA to https://contextqa.com\n\n**SEO REQUIREMENTS:**\n- Focus keyword appears 5+ times and in 3+ H2 headings\n- Bold the Focus Keyword 2-3 times\n- Include secondary keywords: flakiness, rework, slowness, locator maintain, error handling\n- Add 2-3 external DoFollow links\n- Include JSON-LD schema for Article and FAQ\n- 1,500 words exactly\n\nOutput the complete blog post content only.",
+        "options": {}
+      },
+      "id": "content-generator",
+      "name": "Content Generator",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [0, 0],
+      "typeVersion": 1.8
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "id": "gpt-4o-mini",
+      "name": "GPT-4O Mini",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "position": [0, 200],
+      "typeVersion": 1.2
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "Create SEO + AI optimized slug, title, and meta description for this blog post:\n\n{{ $json.output }}\n\n**PRIMARY KEYWORD**: {{ $('Form Submission').item.json['Primary Keyword (Focus Keyword)'] }}\n\n**REQUIREMENTS:**\n- Slug: Include primary keyword, under 50 chars, use hyphens\n- Title: Start with primary keyword, include number + power word, 50-60 chars\n- Meta: Primary keyword in first 20 chars, 150-160 chars total\n\nOutput JSON: {\"slug\": \"...\", \"title\": \"...\", \"meta\": \"...\"}",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "id": "seo-optimizer",
+      "name": "SEO Generator",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [400, 0],
+      "typeVersion": 1.8
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "id": "gpt-4o-mini-2",
+      "name": "GPT-4O Mini 2",
+      "type": "@n8n/nodes-langchain.lmChatOpenAi",
+      "position": [400, 200],
+      "typeVersion": 1.2
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\"slug\": \"ai-testing-trends-2025\",\n\"title\": \"7 Revolutionary AI Testing Trends in 2025\",\n\"meta\": \"AI Testing mastery: Discover 7 revolutionary trends transforming software testing in 2025.\"\n}"
+      },
+      "id": "structured-parser",
+      "name": "Structured Parser",
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "position": [800, 0],
+      "typeVersion": 1.2
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "Generate WordPress-compatible HTML for this blog post:\n\n**PRIMARY KEYWORD**: {{ $('Form Submission').item.json['Primary Keyword (Focus Keyword)'] }}\n**CONTENT**: {{ $('Content Generator').item.json.output }}\n\n**REQUIREMENTS:**\n- Include H1 title with primary keyword\n- Add estimated reading time\n- Create TL;DR section\n- Add table of contents with anchor links\n- Include 6+ H2/H3 headings\n- Add Q&A blocks and comparison tables\n- Include 2 use case examples\n- Add key takeaways and summary\n- Include JSON-LD schema for Article and FAQ\n- Add images with primary keyword alt text\n- Make it 1,500 words\n\nOutput only the HTML content.",
+              "role": "user"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "html-generator",
+      "name": "HTML Generator",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "position": [1200, 0],
+      "typeVersion": 1.8
+    },
+    {
+      "parameters": {
+        "numberInputs": 2
+      },
+      "id": "merge-content",
+      "name": "Merge Content",
+      "type": "n8n-nodes-base.merge",
+      "position": [1600, 0],
+      "typeVersion": 3
+    },
+    {
+      "parameters": {
+        "title": "={{ $('Merge Content').item.json.data[1].output.title }}",
+        "additionalFields": {
+          "authorId": 4,
+          "content": "={{ $('Merge Content').item.json.data[0].message.content }}",
+          "slug": "={{ $('Merge Content').item.json.data[1].output.slug }}",
+          "status": "draft",
+          "commentStatus": "closed",
+          "sticky": false,
+          "categories": [3],
+          "postTemplate": {
+            "values": {}
+          }
+        }
+      },
+      "id": "wordpress-publisher",
+      "name": "WordPress Publisher",
+      "type": "n8n-nodes-base.wordpress",
+      "position": [2000, 0],
+      "typeVersion": 1
+    }
+  ],
+  "connections": {
+    "Form Submission": {
+      "main": [
+        [
+          {
+            "node": "AI Research",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Research": {
+      "main": [
+        [
+          {
+            "node": "Content Generator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Content Generator": {
+      "main": [
+        [
+          {
+            "node": "HTML Generator",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "SEO Generator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GPT-4O Mini": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Content Generator",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SEO Generator": {
+      "main": [
+        [
+          {
+            "node": "Merge Content",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "GPT-4O Mini 2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "SEO Generator",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "SEO Generator",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML Generator": {
+      "main": [
+        [
+          {
+            "node": "Merge Content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge Content": {
+      "main": [
+        [
+          {
+            "node": "WordPress Publisher",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {},
+  "versionId": "simplified-seo-workflow-v1"
+}
